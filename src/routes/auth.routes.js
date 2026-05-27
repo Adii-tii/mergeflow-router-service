@@ -7,11 +7,12 @@ const AUTH_SERVICE = process.env.AUTH_SERVICE_URL;
 
 router.get("/api/auth/success", (req, res) => {
     const token = req.query.token;
+    const isProd = process.env.NODE_ENV === "production";
 
     res.cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "Lax",
+        secure: isProd,
+        sameSite: isProd ? "None" : "Lax",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -21,10 +22,11 @@ router.get("/api/auth/success", (req, res) => {
 });
 
 router.post("/api/auth/logout", (req, res) => {
+    const isProd = process.env.NODE_ENV === "production";
     res.clearCookie("token", {
         path: "/",
-        sameSite: "Lax",
-        secure: false,
+        sameSite: isProd ? "None" : "Lax",
+        secure: isProd,
         httpOnly: true
     });
     res.status(200).json({ success: true, message: "Logged out successfully" });
