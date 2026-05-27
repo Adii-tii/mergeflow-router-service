@@ -17,8 +17,9 @@ router.get("/api/auth/success", (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // important: ensure cookie flushed on 5000 response
-    const redirectUrl = process.env.CLIENT_URL ? `${process.env.CLIENT_URL}/dashboard` : "http://localhost:5173/dashboard";
+    // Redirect to the frontend's /auth/callback route with the token in the URL hash fragment
+    const clientBase = process.env.CLIENT_URL || "http://localhost:5173";
+    const redirectUrl = `${clientBase}/auth/callback#token=${token}`;
     res.status(302).set("Location", redirectUrl).end();
 });
 
