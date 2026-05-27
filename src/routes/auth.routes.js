@@ -18,7 +18,8 @@ router.get("/api/auth/success", (req, res) => {
     });
 
     // important: ensure cookie flushed on 5000 response
-    res.status(302).set("Location", "http://localhost:5173/dashboard").end();
+    const redirectUrl = process.env.CLIENT_URL ? `${process.env.CLIENT_URL}/dashboard` : "http://localhost:5173/dashboard";
+    res.status(302).set("Location", redirectUrl).end();
 });
 
 router.post("/api/auth/logout", (req, res) => {
