@@ -16,8 +16,9 @@ const PORT = process.env.PORT;
 
 app.use(cookieParser())
 
+const clientUrl = process.env.CLIENT_URL ? process.env.CLIENT_URL.replace(/\/$/, "") : "http://localhost:5173";
 app.use(cors({ 
-    origin: process.env.CLIENT_URL, 
+    origin: clientUrl, 
     credentials: true 
 }));
 app.use(auth);
